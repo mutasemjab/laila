@@ -52,7 +52,7 @@
 @section('content')
 <div class="dashboard">
     <div class="card">
-        <h2>{{ __('messages.Patients') }}</h2>
+        <h2>{{ __('messages.users') }}</h2>
         <p>{{ $patientsCount }}</p>
     </div>
    
