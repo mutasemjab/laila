@@ -36,22 +36,22 @@ class User extends Authenticatable
    {
        return $this->hasMany(AttendanceLog::class);
    }
-   
+
    /**
     * Generate a unique barcode for the user.
     */
    public static function generateUniqueBarcode()
    {
-       $barcode = 'USR' . rand(10000000, 99999999);
-       
+       $barcode = rand(10000000, 99999999);
+
        // Make sure the barcode is unique
        while (self::where('barcode', $barcode)->exists()) {
-           $barcode = 'USR' . rand(10000000, 99999999);
+           $barcode = rand(10000000, 99999999);
        }
-       
+
        return $barcode;
    }
-   
+
    /**
     * Calculate total time spent by user inside the premises.
     */
@@ -60,7 +60,7 @@ class User extends Authenticatable
        $logs = $this->attendanceLogs()->orderBy('time')->get();
        $totalTimeInSeconds = 0;
        $inTime = null;
-       
+
        foreach ($logs as $log) {
            if ($log->type == 'in') {
                $inTime = strtotime($log->time);
@@ -70,17 +70,17 @@ class User extends Authenticatable
                $inTime = null;
            }
        }
-       
+
        // If there's an "in" without a corresponding "out", consider the current time
        if ($inTime) {
            $currentTime = time();
            $totalTimeInSeconds += ($currentTime - $inTime);
        }
-       
+
        // Return the total time in seconds
        return $totalTimeInSeconds;
    }
-   
+
    /**
     * Format the total time into a human-readable format.
     */
@@ -90,7 +90,7 @@ class User extends Authenticatable
        $hours = floor($totalSeconds / 3600);
        $minutes = floor(($totalSeconds % 3600) / 60);
        $seconds = $totalSeconds % 60;
-       
+
        return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
    }
 

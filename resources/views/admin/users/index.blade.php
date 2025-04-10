@@ -43,10 +43,10 @@
                                         <a href="{{ route('users.show', $user->id) }}" class="btn btn-sm btn-info">View</a>
                                         <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-primary">Edit</a>
                                         <a href="{{ route('attendance.user.logs', $user->id) }}" class="btn btn-sm btn-secondary">Attendance</a>
-                                        <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display: inline-block;">
+                                        <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display: inline-block;" onsubmit="return confirmDelete(event)">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this user?')">Delete</button>
+                                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -61,3 +61,17 @@
 @endsection
 
 
+@section('script')
+<!-- Add this script to the page (preferably at the bottom before </body>) -->
+<script>
+    function confirmDelete(event) {
+        event.preventDefault();
+
+        if (confirm('Warning: Are you sure you want to delete this user?')) {
+            event.target.submit();
+        }
+
+        return false;
+    }
+    </script>
+@endsection
