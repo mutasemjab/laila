@@ -32,10 +32,7 @@ class User extends Authenticatable
    ];
 
 
-   public function attendanceLogs()
-   {
-       return $this->hasMany(AttendanceLog::class);
-   }
+   
    
    /**
     * Generate a unique barcode for the user.
@@ -52,46 +49,41 @@ class User extends Authenticatable
        return $barcode;
    }
    
-   /**
-    * Calculate total time spent by user inside the premises.
-    */
-   public function calculateTotalTimeInside()
-   {
-       $logs = $this->attendanceLogs()->orderBy('time')->get();
-       $totalTimeInSeconds = 0;
-       $inTime = null;
-       
-       foreach ($logs as $log) {
-           if ($log->type == 'in') {
-               $inTime = strtotime($log->time);
-           } elseif ($log->type == 'out' && $inTime) {
-               $outTime = strtotime($log->time);
-               $totalTimeInSeconds += ($outTime - $inTime);
-               $inTime = null;
-           }
-       }
-       
-       // If there's an "in" without a corresponding "out", consider the current time
-       if ($inTime) {
-           $currentTime = time();
-           $totalTimeInSeconds += ($currentTime - $inTime);
-       }
-       
-       // Return the total time in seconds
-       return $totalTimeInSeconds;
-   }
-   
-   /**
-    * Format the total time into a human-readable format.
-    */
-   public function formattedTotalTime()
-   {
-       $totalSeconds = $this->calculateTotalTimeInside();
-       $hours = floor($totalSeconds / 3600);
-       $minutes = floor(($totalSeconds % 3600) / 60);
-       $seconds = $totalSeconds % 60;
-       
-       return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
-   }
+   public function attendanceLogs()
+    {
+        return $this->hasMany(AttendanceLog::class);
+    }
 
+    public function getCurrentRoomAttribute()
+    {
+        $lastLog = $this->attendanceLogs()->orderBy('time', 'desc')->first();
+        
+        if ($lastLog && $lastLog->type == 'in') {
+            return $lastLog->room;
+        }
+        
+        return null;
+    }
+
+    public function getTimeInRoomAttribute($roomId)
+    {
+        $logs = $this->attendanceLogs()
+            ->where('room_id', $roomId)
+            ->orderBy('time')
+            ->get();
+        
+        $totalTime = 0;
+        $checkIn = null;
+        
+        foreach ($logs as $log) {
+            if ($log->type == 'in') {
+                $checkIn = $log->time;
+            } else if ($log->type == 'out' && $checkIn) {
+                $totalTime += strtotime($log->time) - strtotime($checkIn);
+                $checkIn = null;
+            }
+        }
+        
+        return $totalTime; // in seconds
+    }
 }

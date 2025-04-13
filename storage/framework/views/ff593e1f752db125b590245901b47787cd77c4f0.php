@@ -16,12 +16,7 @@
                 </div>
 
                 <div class="card-body">
-                    <?php if(session('success')): ?>
-                        <div class="alert alert-success">
-                            <?php echo e(session('success')); ?>
-
-                        </div>
-                    <?php endif; ?>
+                
 
                     <table class="table">
                         <thead>
@@ -43,7 +38,7 @@
                                     <td>
                                         <a href="<?php echo e(route('users.show', $user->id)); ?>" class="btn btn-sm btn-info">View</a>
                                         <a href="<?php echo e(route('users.edit', $user->id)); ?>" class="btn btn-sm btn-primary">Edit</a>
-                                        <a href="<?php echo e(route('attendance.user.logs', $user->id)); ?>" class="btn btn-sm btn-secondary">Attendance</a>
+                                        <a href="<?php echo e(route('user-time.show', $user->id)); ?>" class="btn btn-sm btn-secondary">Attendance</a>
                                         <form action="<?php echo e(route('users.destroy', $user->id)); ?>" method="POST" style="display: inline-block;">
                                             <?php echo csrf_field(); ?>
                                             <?php echo method_field('DELETE'); ?>

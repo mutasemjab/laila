@@ -40,16 +40,7 @@
                 </li>
                 <?php endif; ?>
 
-               
-
-          
-                    <li class="nav-item">
-                        <a href="<?php echo e(route('attendance.scanner')); ?>" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p><?php echo e(__('messages.attendance scanner')); ?> </p>
-                        </a>
-                    </li>
-                 
+            
         
          
 

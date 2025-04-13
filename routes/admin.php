@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Reports\ProductReportController;
 use App\Http\Controllers\Reports\TaxReportController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 use Spatie\Permission\Models\Permission;
 /*
 |--------------------------------------------------------------------------
@@ -81,12 +82,12 @@ Route::get('/product_move', [ProductReportController::class, 'index'])->name('pr
 Route::get('/tax_report', [TaxReportController::class, 'index'])->name('tax_report');
 
 // Attendance routes
-Route::get('/attendance/scanner', [AttendanceController::class, 'scannerView'])->name('attendance.scanner');
-Route::post('/attendance/scan', [AttendanceController::class, 'processScan'])->name('attendance.scan');
-Route::get('/attendance/logs', [AttendanceController::class, 'showAllLogs'])->name('attendance.logs');
-Route::get('/attendance/user/{user}', [AttendanceController::class, 'showUserLogs'])->name('attendance.user.logs');
-Route::get('/attendance/calculate/{user}', [AttendanceController::class, 'calculateTime'])->name('attendance.calculate');
-
+Route::post('/scan-barcode', [AttendanceController::class, 'scanBarcode'])->name('scan.barcode');
+Route::post('/validate-barcode', [AttendanceController::class, 'validateBarcode'])->name('validate.barcode');
+Route::get('/room/statistics', [DashboardController::class, 'getStatistics'])
+     ->name('room.statistics');
+Route::get('/initialize-room-occupancy', [AttendanceController::class, 'initializeRoomOccupancy'])->name('initialize.room.occupancy');
+Route::get('user-time/{id}', [UserController::class, 'showLogs'])->name('user-time.show');
 
 // Resource Route
 Route::resource('users', UserController::class);

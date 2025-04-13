@@ -16,11 +16,7 @@
                 </div>
 
                 <div class="card-body">
-                    @if (session('success'))
-                        <div class="alert alert-success">
-                            {{ session('success') }}
-                        </div>
-                    @endif
+                
 
                     <table class="table">
                         <thead>
@@ -42,7 +38,7 @@
                                     <td>
                                         <a href="{{ route('users.show', $user->id) }}" class="btn btn-sm btn-info">View</a>
                                         <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-primary">Edit</a>
-                                        <a href="{{ route('attendance.user.logs', $user->id) }}" class="btn btn-sm btn-secondary">Attendance</a>
+                                        <a href="{{ route('user-time.show', $user->id) }}" class="btn btn-sm btn-secondary">Attendance</a>
                                         <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display: inline-block;">
                                             @csrf
                                             @method('DELETE')

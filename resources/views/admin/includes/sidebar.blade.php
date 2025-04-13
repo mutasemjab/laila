@@ -40,16 +40,7 @@
                 </li>
                 @endif
 
-               
-
-          
-                    <li class="nav-item">
-                        <a href="{{ route('attendance.scanner') }}" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>{{__('messages.attendance scanner')}} </p>
-                        </a>
-                    </li>
-                 
+            
         
          
 {{-- 
